@@ -1,0 +1,42 @@
+@import "tailwindcss";
+
+@theme {
+  --color-ruet: #0f5132;
+  --color-ruet-dark: #0a3d26;
+  --color-ruet-light: #e6f4ec;
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: #f8fafc;
+  color: #0f172a;
+}
+
+@media print {
+  @page {
+    size: A4;
+    margin: 10mm;
+  }
+  .no-print {
+    display: none !important;
+  }
+  body {
+    background: #fff;
+  }
+  /* The receipt is built to fit on one printed page. */
+  .receipt-sheet {
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    break-inside: avoid;
+    font-size: 13px;
+    line-height: 1.35;
+  }
+  .receipt-sheet img {
+    max-height: 64px;
+  }
+}

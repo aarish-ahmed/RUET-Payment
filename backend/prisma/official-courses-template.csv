@@ -1,0 +1,250 @@
+departmentCode,semester,code,title,credits
+# OFFICIAL RUET COURSES — verified against the syllabi listed in prisma/courses-data.ts (SOURCES).
+# semester is a RUET term code: 1_ODD, 1_EVEN, 2_ODD, 2_EVEN, 3_ODD, 3_EVEN, 4_ODD, 4_EVEN, 5_ODD, 5_EVEN.
+# 5th Odd/Even is Architecture only. Optional/elective courses are NOT in this file (see courses-data.ts header).
+# To add a pending department: add one row per real course from its official syllabus, then re-run the seed.
+ECE,1_ODD,ECE 1101,Circuits and Systems - I,3
+ECE,1_ODD,ECE 1102,Circuits and Systems - I Sessional,1.5
+ECE,1_ODD,ECE 1103,Computer Programming,3
+ECE,1_ODD,ECE 1104,Computer Programming Sessional,1.5
+ECE,1_ODD,Math 1117,Calculus and Co-ordinate Geometry,3
+ECE,1_ODD,Phy 1117,Optics and Modern Physics,3
+ECE,1_ODD,Phy 1118,Optics and Modern Physics Sessional,0.75
+ECE,1_ODD,Hum 1117,Technical English,3
+ECE,1_ODD,Hum 1118,Technical English Sessional,0.75
+ECE,1_ODD,ECE 1100,Introduction to Computer System,0.75
+ECE,1_EVEN,ECE 1201,Circuits and Systems - II,3
+ECE,1_EVEN,ECE 1202,Circuits and Systems - II Sessional,0.75
+ECE,1_EVEN,ECE 1203,Object Oriented Programming,3
+ECE,1_EVEN,ECE 1204,Object Oriented Programming Sessional,1.5
+ECE,1_EVEN,ECE 1205,Analog Electronic Circuits - I,3
+ECE,1_EVEN,ECE 1206,Analog Electronic Circuits - I Sessional,0.75
+ECE,1_EVEN,Math 1217,Differential Equations,3
+ECE,1_EVEN,Hum 1217,"Economics, Government & Sociology",3
+ECE,1_EVEN,ECE 1200,Electrical Shop Practice,1.5
+ECE,2_ODD,ECE 2103,Data Structure & Algorithms,3
+ECE,2_ODD,ECE 2104,Data Structure & Algorithms Sessional,1.5
+ECE,2_ODD,ECE 2107,Electrical Machines - I,3
+ECE,2_ODD,ECE 2108,Electrical Machines - I Sessional,0.75
+ECE,2_ODD,ECE 2111,Digital Techniques,3
+ECE,2_ODD,ECE 2112,Digital Techniques Sessional,0.75
+ECE,2_ODD,Math 2117,Vector Analysis & Linear Algebra,3
+ECE,2_ODD,Chem 2117,Inorganic and Physical Chemistry,3
+ECE,2_ODD,Chem 2118,Inorganic and Physical Chemistry Sessional,0.75
+ECE,2_ODD,ECE 2100,Software Development Project - I,0.75
+ECE,2_EVEN,ECE 2205,Analog Electronic Circuits - II,3
+ECE,2_EVEN,ECE 2206,Analog Electronic Circuits - II Sessional,0.75
+ECE,2_EVEN,ECE 2213,Numerical Methods,3
+ECE,2_EVEN,ECE 2214,Numerical Methods Sessional,1.5
+ECE,2_EVEN,ECE 2215,Data Base Systems,3
+ECE,2_EVEN,ECE 2216,Data Base Systems Sessional,1.5
+ECE,2_EVEN,Math 2217,"Complex Variable, Statistics & Transform Methods",3
+ECE,2_EVEN,Hum 2217,Industrial Management & Accountancy,3
+ECE,2_EVEN,ECE 2200,Software Development Project - II,0.75
+ECE,3_ODD,ECE 3107,Electrical Machines - II,3
+ECE,3_ODD,ECE 3108,Electrical Machines - II Sessional,0.75
+ECE,3_ODD,ECE 3109,Power System,3
+ECE,3_ODD,ECE 3111,Microprocessors & Assembly Language,3
+ECE,3_ODD,ECE 3112,Microprocessors & Assembly Language Sessional,1.5
+ECE,3_ODD,ECE 3117,Software Engineering & Information System Design,3
+ECE,3_ODD,ECE 3118,Software Engineering & Information System Design Sessional,0.75
+ECE,3_ODD,ECE 3119,Computer Architecture and Design,3
+ECE,3_ODD,ECE 3100,Electronic Shop Practice,1.5
+ECE,3_EVEN,ECE 3205,Industrial Electronics,3
+ECE,3_EVEN,ECE 3206,Industrial Electronics Sessional,0.75
+ECE,3_EVEN,ECE 3211,Peripheral and Interfacings,3
+ECE,3_EVEN,ECE 3212,Peripheral and Interfacings Sessional,0.75
+ECE,3_EVEN,ECE 3221,Operating System,3
+ECE,3_EVEN,ECE 3222,Operating System Sessional,0.75
+ECE,3_EVEN,ECE 3207,Communication Engineering,3
+ECE,3_EVEN,ECE 3208,Communication Engineering Sessional,1.5
+ECE,3_EVEN,ECE 3219,Computer Aided Instrumentations,3
+ECE,3_EVEN,ECE 3220,Computer Aided Instrumentations Sessional,0.75
+ECE,4_ODD,ECE 4109,"Power Station, Switchgear & Protection",3
+ECE,4_ODD,ECE 4123,Digital Signal Processing,3
+ECE,4_ODD,ECE 4124,Digital Signal Processing Sessional,1.5
+ECE,4_ODD,ECE 4121,Electromagnetic Fields & Waves,3
+ECE,4_ODD,ECE 4100,Industrial Training,1
+ECE,4_ODD,ECE 4122,Seminar,0.75
+ECE,4_ODD,ECE 4000,Thesis / Project - I,1.5
+ECE,4_EVEN,ECE 4211,VLSI Design,3
+ECE,4_EVEN,ECE 4223,Digital Image Processing,3
+ECE,4_EVEN,ECE 4224,Digital Image Processing Sessional,0.75
+ECE,4_EVEN,ECE 4217,Control Systems,3
+ECE,4_EVEN,ECE 4218,Control Systems Sessional,0.75
+ECE,4_EVEN,ECE 4000,Thesis / Project - II,3
+EEE,1_ODD,EEE 1101,Electrical Circuit I,3
+EEE,1_ODD,EEE 1102,Electrical Circuit I Sessional,1.5
+EEE,1_ODD,CSE 1111,Computer Programming,3
+EEE,1_ODD,CSE 1112,Computer Programming Sessional,1.5
+EEE,1_ODD,Math 1101,Engg. Mathematics I,3
+EEE,1_ODD,Phy 1111,Physics,3
+EEE,1_ODD,Phy 1112,Physics Sessional,0.75
+EEE,1_ODD,Hum 1111,Technical English,3
+EEE,1_ODD,Hum 1112,Technical English Sessional,0.75
+EEE,1_EVEN,EEE 1201,Electrical Circuit II,3
+EEE,1_EVEN,EEE 1202,Electrical Circuit II Sessional,0.75
+EEE,1_EVEN,EEE 1203,Electronics I,3
+EEE,1_EVEN,EEE 1204,Electronics I Sessional,1.5
+EEE,1_EVEN,Chem 1111,Chemistry,3
+EEE,1_EVEN,Chem 1112,Chemistry Sessional,0.75
+EEE,1_EVEN,Hum 1211,Financial Account & Economic Analysis,3
+EEE,1_EVEN,Math 1201,Engg. Mathematics II,3
+EEE,1_EVEN,ME 1200,Engineering Drawing,1.5
+EEE,2_ODD,EEE 2100,Electrical Shop Practice,1.5
+EEE,2_ODD,EEE 2103,Electronics II,3
+EEE,2_ODD,EEE 2104,Electronics II Sessional,1.5
+EEE,2_ODD,EEE 2105,Electrical Machine I,3
+EEE,2_ODD,EEE 2106,Electrical Machine I Sessional,1.5
+EEE,2_ODD,Math 2101,Engg. Mathematics III,3
+EEE,2_ODD,ME 2101,Basic Mechanical Engineering,3
+EEE,2_ODD,ME 2102,Basic Mechanical Engineering Sessional,0.75
+EEE,2_ODD,IPE 2111,Legal Issues and Management for Engineers,3
+EEE,2_EVEN,Math 2201,Engg. Mathematics IV,3
+EEE,2_EVEN,EEE 2203,Electronics III,3
+EEE,2_EVEN,EEE 2204,Electronics III Sessional,1.5
+EEE,2_EVEN,EEE 2205,Electrical Machine II,3
+EEE,2_EVEN,EEE 2206,Electrical Machine II Sessional,1.5
+EEE,2_EVEN,EEE 2211,Measurement & Instrumentation,3
+EEE,2_EVEN,EEE 2212,Measurement & Instrumentation Sessional,1.5
+EEE,2_EVEN,EEE 2213,Digital Electronics I,3
+EEE,2_EVEN,EEE 2214,Digital Electronics I Sessional,0.75
+EEE,3_ODD,EEE 3100,Electronic Shop Practice,1.5
+EEE,3_ODD,EEE 3101,Signals and Linear Systems,3
+EEE,3_ODD,EEE 3105,Control Systems,3
+EEE,3_ODD,EEE 3106,Control Systems Sessional,0.75
+EEE,3_ODD,EEE 3107,Electromagnetic Fields & Waves,3
+EEE,3_ODD,EEE 3109,Computational Methods in Electrical Engineering,3
+EEE,3_ODD,EEE 3110,Computational Methods in Electrical Engineering Sessional,1.5
+EEE,3_ODD,EEE 3117,Communication Engineering I,3
+EEE,3_ODD,EEE 3118,Communication Engineering I Sessional,0.75
+EEE,3_EVEN,EEE 3200,Electrical and Electronic Circuit Simulation Lab,1.5
+EEE,3_EVEN,EEE 3203,Power Electronics,3
+EEE,3_EVEN,EEE 3204,Power Electronics Sessional,0.75
+EEE,3_EVEN,EEE 3205,Power Plant Engineering and Economy,3
+EEE,3_EVEN,EEE 3209,"Microprocessor, Interfacing and System Design",3
+EEE,3_EVEN,EEE 3210,"Microprocessor, Interfacing and System Design Sessional",1.5
+EEE,3_EVEN,EEE 3211,Power System I,3
+EEE,3_EVEN,EEE 3212,Power System I Sessional,1.5
+EEE,3_EVEN,EEE 3217,Communication Engineering II,3
+EEE,3_EVEN,EEE 3218,Communication Engineering II Sessional,0.75
+EEE,4_ODD,EEE 4000,Project & Thesis,1.5
+EEE,4_ODD,EEE 4100,Industrial Training,1
+EEE,4_ODD,EEE 4107,Digital Signal Processing,3
+EEE,4_ODD,EEE 4108,Digital Signal Processing Sessional,0.75
+EEE,4_ODD,EEE 4117,Radio and TV Engineering,3
+EEE,4_ODD,EEE 4118,Radio and TV Engineering Sessional,0.75
+EEE,4_ODD,IPE 4111,Project and Operations Management,2
+EEE,4_EVEN,EEE 4000,Project & Thesis,3
+EEE,4_EVEN,EEE 4200,Seminar,1
+EEE,4_EVEN,EEE 4209,Embedded System Design,3
+EEE,4_EVEN,EEE 4210,Embedded System Design Sessional,0.75
+EEE,4_EVEN,EEE 4217,Mobile Cellular Communication,3
+ARCH,1_ODD,Arch 1102,Design Studio - I,4.5
+ARCH,1_ODD,Arch 1104,Architectural Graphics - I,3
+ARCH,1_ODD,Arch 1106,Design Communication,1.5
+ARCH,1_ODD,Arch 1101,History of Architecture - I,2
+ARCH,1_ODD,Arch 1103,Aesthetics and Design - I,2
+ARCH,1_ODD,Phy 1105,Physics,3
+ARCH,1_ODD,Hum 1107,Communication Skills in English,2
+ARCH,1_ODD,Hum 1109,Human Psychology,2
+ARCH,1_EVEN,Arch 1202,Design Studio - II,4.5
+ARCH,1_EVEN,Arch 1204,Architectural Graphics - II,3
+ARCH,1_EVEN,Arch 1206,Photography and Graphic Reproduction,1.5
+ARCH,1_EVEN,Arch 1201,History of Architecture - II,2
+ARCH,1_EVEN,Arch 1203,Aesthetics and Design - II,2
+ARCH,1_EVEN,Arch 1205,Ecology,2
+ARCH,1_EVEN,Math 1205,Mathematics,3
+ARCH,1_EVEN,Hum 1207,Fundamentals of Sociology,2
+ARCH,2_ODD,Arch 2102,Design Studio - III,6
+ARCH,2_ODD,Arch 2104,Computer Application - I,1.5
+ARCH,2_ODD,Arch 2106,Graphic Design and Sculpture,3
+ARCH,2_ODD,Arch 2101,History of Architecture - III,2
+ARCH,2_ODD,Arch 2103,Climate and Design - I,2
+ARCH,2_ODD,CE 2153,Structure - I,2
+ARCH,2_ODD,URP 2151,Physical Planning - I,2
+ARCH,2_EVEN,Arch 2202,Design Studio - IV,6
+ARCH,2_EVEN,Arch 2204,Computer Application - II,1.5
+ARCH,2_EVEN,Arch 2206,Digital Simulation,1.5
+ARCH,2_EVEN,Arch 2201,History of Architecture - IV,2
+ARCH,2_EVEN,Arch 2203,Climate and Design - II,2
+ARCH,2_EVEN,Arch 2205,Construction Details,2
+ARCH,2_EVEN,CE 2253,Structure - II,2
+ARCH,3_ODD,Arch 3102,Design Studio - V,9
+ARCH,3_ODD,Arch 3104,Building Materials and Constructions,3
+ARCH,3_ODD,Arch 3101,Modern Architecture,2
+ARCH,3_ODD,CE 3153,Structure - III,2
+ARCH,3_ODD,EEE 3165,Electrical Equipment,2
+ARCH,3_EVEN,Arch 3202,Design Studio - VI,9
+ARCH,3_EVEN,Arch 3204,Working Drawing,3
+ARCH,3_EVEN,Arch 3201,Contemporary Architecture,2
+ARCH,3_EVEN,CE 3253,Structure - IV,2
+ARCH,3_EVEN,ME 3275,Mechanical Equipment,2
+ARCH,4_ODD,Arch 4102,Design Studio - VII,9
+ARCH,4_ODD,Arch 4104,Interior Design,1.5
+ARCH,4_ODD,Arch 4101,Architecture of Bengal - I,2
+ARCH,4_ODD,Arch 4103,Urban Design,2
+ARCH,4_ODD,CE 4153,Structure - V,2
+ARCH,4_EVEN,Arch 4202,Design Studio - VIII,9
+ARCH,4_EVEN,Arch 4204,Landscape Design,1.5
+ARCH,4_EVEN,Arch 4201,Architecture of Bengal - II,2
+ARCH,4_EVEN,Arch 4203,Housing,2
+ARCH,4_EVEN,CE 4253,Structure - VI,2
+ARCH,5_ODD,Arch 5102,Design Studio - IX,10.5
+ARCH,5_ODD,Arch 5104,Seminar,1.5
+ARCH,5_ODD,Arch 5101,Research Methodology,2
+ARCH,5_ODD,Arch 5153,Survey Technique,2
+ARCH,5_ODD,Hum 5107,Project Economics,2
+ARCH,5_EVEN,Arch 5202,Design Studio - X,10.5
+ARCH,5_EVEN,Arch 5204,Dissertation,3
+ARCH,5_EVEN,Arch 5201,Professional Practice,2
+ARCH,5_EVEN,Hum 5207,Management and Accounting,2
+ARCH,5_EVEN,Arch 5000,Professional Training (non-credit),0
+CE,1_ODD,CE 1101,Surveying,4
+CE,1_ODD,Chem 1101,Chemistry,3
+CE,1_ODD,Phy 1101,Physics - I,3
+CE,1_ODD,Math 1101,Mathematics - I,3
+CE,1_ODD,Hum 1101,English,2
+CE,1_ODD,CE 1100,Civil Engineering Drawing,1.5
+CE,1_ODD,MES 1132,Mechanical Engineering Shops Sessional,1.5
+CE,1_ODD,Chem 1102,Chemistry Sessional,1.5
+CE,1_ODD,Hum 1102,Developing English Language Skills,1.5
+CE,1_EVEN,CE 1201,Engineering Mechanics,4
+CE,1_EVEN,EEE 1241,Basic Electrical Engineering,3
+CE,1_EVEN,Hum 1201,Bangladesh Studies,2
+CE,1_EVEN,Phy 1201,Physics - II,3
+CE,1_EVEN,Math 1201,Mathematics - II,3
+CE,1_EVEN,CE 1202,Practical Surveying,1.5
+CE,1_EVEN,CE 1200,Computer Aided Drafting,1.5
+CE,1_EVEN,Phy 1202,Physics Sessional,1.5
+MSE,1_ODD,Phy 1131,Physics,3
+MSE,1_ODD,Math 1131,Calculus and Differential Equation,3
+MSE,1_ODD,Hum 1131,Industrial Economics and Fundamentals of Sociology,3
+MSE,1_ODD,EEE 1191,Electrical Circuits,3
+MSE,1_ODD,MSE 1101,Introduction to Material Science & Engineering,3
+MSE,1_ODD,Phy 1132,Physics Sessional,1.5
+MSE,1_ODD,EEE 1192,Electrical Circuits Sessional,1.5
+MSE,1_ODD,ME 1150,Engineering Graphics,1.5
+MSE,1_ODD,MSE 1102,Introduction to Material Science & Engineering Sessional,0.75
+MSE,1_EVEN,Chem 1231,Chemistry,3
+MSE,1_EVEN,Math 1231,Vector Analysis and Matrices,3
+MSE,1_EVEN,CSE 1291,Programming Language and Data Structure,3
+MSE,1_EVEN,Hum 1231,Communication English,3
+MSE,1_EVEN,ME 1259,Engineering Mechanics,3
+MSE,1_EVEN,Chem 1232,Chemistry Sessional,1.5
+MSE,1_EVEN,CSE 1292,Programming Language and Data Structure Sessional,0.75
+MSE,1_EVEN,Hum 1232,Communication English Sessional,0.75
+MSE,1_EVEN,MSE 1200,Computer Fundamentals and Ethics,0.75
+MSE,1_EVEN,ME 1250,Computer Graphics,1.5
+# PENDING — no courses seeded yet:
+# CE: 2_ODD, 2_EVEN, 3_ODD, 3_EVEN, 4_ODD, 4_EVEN — check: https://www.ce.ruet.ac.bd/public/storage/pages/course-curriculum_5.pdf
+# MSE: 2_ODD, 2_EVEN, 3_ODD, 3_EVEN, 4_ODD, 4_EVEN — check: https://www.mse.ruet.ac.bd/public/storage/pages/course-curriculum_12.pdf
+# CSE: All 8 terms — check: CSE department page on ruet.ac.bd / CSE department office
+# ME: All 8 terms — check: ME department page on ruet.ac.bd / ME department office
+# ETE: All 8 terms — check: ETE department page on ruet.ac.bd / ETE department office
+# IPE: All 8 terms — check: IPE department page on ruet.ac.bd / IPE department office
+# CME: All 8 terms — check: CME department page on ruet.ac.bd / CME department office
+# URP: All 8 terms — check: URP department page on ruet.ac.bd / URP department office
+# ChE: All 8 terms — check: ChE / Chemical Engineering department page on ruet.ac.bd / department office
+# BECM: All 8 terms — check: BECM department page on ruet.ac.bd / BECM department office
+# MTE: All 8 terms — check: MTE department page on ruet.ac.bd / MTE department office

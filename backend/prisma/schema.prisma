@@ -1,0 +1,121 @@
+// RUET Central Online Fee Payment & Automated Ledger System
+// Database: Neon Postgres (DATABASE_URL must include ?sslmode=require)
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum FeeType {
+  SEMESTER_FINAL
+  COURSE_REGISTRATION
+}
+
+enum PaymentStatus {
+  PENDING
+  COMPLETED
+  FAILED
+  CANCELLED
+}
+
+enum Role {
+  STUDENT
+  TEACHER
+}
+
+model Department {
+  code      String    @id
+  name      String
+  createdAt DateTime  @default(now())
+  students  Student[]
+  courses   Course[]
+  payments  Payment[]
+
+  @@map("departments")
+}
+
+model Student {
+  id             String   @id @default(uuid())
+  roll           String   @unique
+  name           String
+  // Unique so login by email is unambiguous. Nullable: students
+  // may register without an email; Postgres allows multiple NULLs
+  // in a unique index.
+  email          String?  @unique
+  // One account table for everyone. Default role is STUDENT; Jidan
+  // assigns TEACHER to specified accounts (see README "Teacher
+  // system" — UPDATE students SET role='TEACHER' ...). A TEACHER
+  // logs in from the same /login page and is redirected to the
+  // teacher dashboard; a TEACHER can never make a student payment
+  // (requireAuth rejects teacher tokens with 403).
+  role           Role     @default(STUDENT)
+  // Residential hall, e.g. "Shahid Lt. Selim Hall". Nullable: students
+  // registered before halls were added set it via PATCH /api/auth/me.
+  // Values come from src/config/halls.ts (verified RUET hall list).
+  hall           String?
+  departmentCode String
+  department     Department @relation(fields: [departmentCode], references: [code])
+  passwordHash   String
+  createdAt      DateTime @default(now())
+  payments       Payment[]
+
+  @@map("students")
+}
+
+model Course {
+  id             String   @id @default(uuid())
+  code           String
+  title          String
+  credits        Float
+  // RUET term code, e.g. "1_ODD" (1st Odd), "1_EVEN" (1st Even) ... "5_EVEN".
+  semester       String
+  departmentCode String
+  department     Department @relation(fields: [departmentCode], references: [code])
+  createdAt      DateTime @default(now())
+
+  @@unique([code, departmentCode, semester])
+  @@index([departmentCode, semester])
+  @@map("courses")
+}
+
+model Payment {
+  id             String        @id @default(uuid())
+  tranId         String        @unique
+  valId          String?
+  // Unique receipt number, e.g. RUET-2026-000123. Generated once when
+  // a payment completes (see services/receipt.ts); null while PENDING.
+  // Printed on the receipt and shown on the verification page.
+  // @map is REQUIRED: migration 20261124180000 created this column
+  // as snake_case "receipt_no", while every other column in the
+  // schema is camelCase. Without @map, Prisma queries "receiptNo",
+  // which does not exist, and Pay fails with:
+  // "The column `payments.receiptNo` does not exist in the current
+  // database". See migration 20261124193000_receipt_no_map.
+  receiptNo      String?       @unique @map("receipt_no")
+  studentRoll    String
+  student        Student       @relation(fields: [studentRoll], references: [roll])
+  departmentCode String
+  department     Department    @relation(fields: [departmentCode], references: [code])
+  // RUET term code, e.g. "1_ODD" (1st Odd), "1_EVEN" (1st Even) ... "5_EVEN".
+  semester       String
+  feeType        FeeType
+  totalCredits   Float
+  amountBdt      Decimal       @db.Decimal(10, 2)
+  status         PaymentStatus @default(PENDING)
+  coursesJson    Json
+  createdAt      DateTime      @default(now())
+  completedAt    DateTime?
+
+  // One completed payment per (roll, department, semester, fee type).
+  // The service layer enforces this: a COMPLETED payment blocks a new
+  // one, a PENDING payment is reused, and a FAILED/CANCELLED payment
+  // is removed before a retry is created.
+  @@unique([studentRoll, departmentCode, semester, feeType])
+  @@index([departmentCode, semester, feeType])
+  @@index([studentRoll])
+  @@map("payments")
+}

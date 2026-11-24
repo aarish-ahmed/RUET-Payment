@@ -1,0 +1,10 @@
+feeType,baseFeeBdt,perCreditRateBdt
+# HOW TO USE: replace the two rows below with the official RUET fee table,
+# then copy them into backend/src/config/fees.ts (FEE_RULES).
+# feeType must be SEMESTER_FINAL or COURSE_REGISTRATION.
+# baseFeeBdt is the fixed charge once per payment (0 if none).
+# perCreditRateBdt is the charge in BDT per credit.
+# Amount = baseFeeBdt + perCreditRateBdt * totalCredits.
+# Current rows are SAMPLE rates only — replace them:
+SEMESTER_FINAL,1500,500
+COURSE_REGISTRATION,500,1000
