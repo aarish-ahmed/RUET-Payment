@@ -38,6 +38,19 @@ function makeTranId(): string {
   return `RUET-${Date.now()}-${randomBytes(4).toString("hex").toUpperCase()}`;
 }
 
+function resolveBackendUrl(req: Request): string {
+  if (process.env.BACKEND_URL?.trim() || process.env.RENDER_EXTERNAL_URL?.trim()) {
+    return env.backendUrl;
+  }
+  const host = req.get("host")?.trim();
+  if (host && !host.startsWith("localhost") && !host.startsWith("127.0.0.1")) {
+    const forwardedProto = req.get("x-forwarded-proto")?.split(",")[0]?.trim();
+    const protocol = forwardedProto || "https";
+    return `${protocol}://${host}`.replace(/\/+$/, "");
+  }
+  return env.backendUrl;
+}
+
 function publicPayment(payment: {
   id: string;
   tranId: string;
@@ -77,9 +90,9 @@ function publicPayment(payment: {
 }
 
 /**
- * Generate a unique receipt number (RUET-2026-000123), sequential per
- * calendar year. Retries with a random suffix if two payments complete
- * at the same instant and collide on the unique constraint.
+- Generate a unique receipt number (RUET-2026-000123), sequential per
+- calendar year. Retries with a random suffix if two payments complete
+- at the same instant and collide on the unique constraint.
  */
 async function makeReceiptNo(): Promise<string> {
   const countThisYear = async (year: number): Promise<number> =>
@@ -127,11 +140,11 @@ router.get("/departments", async (_req, res) => {
 });
 
 /**
- * Server-calculated payment card. The amount comes from the term
- * only (odd = 19 credits, even = 21; 20 BDT/credit + 15 BDT online
- * charge) — the frontend never supplies an amount, and no course
- * list is needed. The /courses endpoint was removed with the course
- * list: the Course table stays in Prisma for future use only.
+- Server-calculated payment card. The amount comes from the term
+- only (odd = 19 credits, even = 21; 20 BDT/credit + 15 BDT online
+- charge) — the frontend never supplies an amount, and no course
+- list is needed. The /courses endpoint was removed with the course
+- list: the Course table stays in Prisma for future use only.
  */
 router.post("/quote", requireAuth, async (req: AuthenticatedRequest, res) => {
   const parsed = quoteSchema.safeParse(req.body);
@@ -198,6 +211,7 @@ router.post("/initiate", requireAuth, async (req: AuthenticatedRequest, res) => 
           },
         });
 
+    const currentBackendUrl = resolveBackendUrl(req);
     const productName = `${feeType === "SEMESTER_FINAL" ? "Semester Final Fee" : "Course Registration Fee"} — ${departmentCode} ${termLabel(semester)}`;
     const initiated = await initiatePayment({
       tranId: payment.tranId,
@@ -205,10 +219,10 @@ router.post("/initiate", requireAuth, async (req: AuthenticatedRequest, res) => 
       customerName: student.name,
       customerEmail: student.email,
       productName,
-      successUrl: `${env.backendUrl}/api/payments/success`,
-      failUrl: `${env.backendUrl}/api/payments/fail`,
-      cancelUrl: `${env.backendUrl}/api/payments/cancel`,
-      ipnUrl: `${env.backendUrl}/api/payments/ipn`,
+      successUrl: `${currentBackendUrl}/api/payments/success`,
+      failUrl: `${currentBackendUrl}/api/payments/fail`,
+      cancelUrl: `${currentBackendUrl}/api/payments/cancel`,
+      ipnUrl: `${currentBackendUrl}/api/payments/ipn`,
     });
     res.json({
       payment: publicPayment(payment),
@@ -221,11 +235,11 @@ router.post("/initiate", requireAuth, async (req: AuthenticatedRequest, res) => 
 });
 
 /**
- * Complete a payment ONLY after server-side SSLCommerz validation.
- * A redirect alone never marks a payment COMPLETED. On completion the
- * payment is recorded in Postgres (status COMPLETED, receiptNo issued)
- * and the receipt is generated from that record. There is no Excel or
- * Google Sheet — Postgres is the only record; see README.
+- Complete a payment ONLY after server-side SSLCommerz validation.
+- A redirect alone never marks a payment COMPLETED. On completion the
+- payment is recorded in Postgres (status COMPLETED, receiptNo issued)
+- and the receipt is generated from that record. There is no Excel or
+- Google Sheet — Postgres is the only record; see README.
  */
 async function completeFromValidation(tranId: string, valId: string) {
   const payment = await prisma.payment.findUnique({
@@ -288,13 +302,13 @@ async function completeFromValidation(tranId: string, valId: string) {
 }
 
 /**
- * SSLCommerz calls success_url / fail_url / cancel_url with a POST
- * (form POST from the gateway: tran_id, val_id, amount, status in the
- * body). The old code only had GET routes, so the gateway's POST got a
- * 404, completeFromValidation never ran, and the payment stayed
- * PENDING — that was the bug. These routes now accept BOTH GET
- * (browser / manual retry) and POST (gateway), reading tran_id/val_id
- * from the body first, then the query string.
+- SSLCommerz calls success_url / fail_url / cancel_url with a POST
+- (form POST from the gateway: tran_id, val_id, amount, status in the
+- body). The old code only had GET routes, so the gateway's POST got a
+- 404, completeFromValidation never ran, and the payment stayed
+- PENDING — that was the bug. These routes now accept BOTH GET
+- (browser / manual retry) and POST (gateway), reading tran_id/val_id
+- from the body first, then the query string.
  */
 function gatewayParams(req: Request): { tranId: string; valId: string } {
   const body = (req.body ?? {}) as Record<string, unknown>;
@@ -309,7 +323,7 @@ function gatewayParams(req: Request): { tranId: string; valId: string } {
 // env.frontendUrl already defaults to http://localhost:3000, but fall
 // back defensively so a missing env value can never throw here.
 function frontendBaseUrl(): string {
-  return env.frontendUrl || "http://localhost:3000";
+  return (env.frontendUrl || "http://localhost:3000").replace(/\/+$/, "");
 }
 
 function failRedirectUrl(error: unknown): string {
@@ -415,13 +429,13 @@ router.route("/fail").get(handleFail).post(handleFail);
 router.route("/cancel").get(handleCancel).post(handleCancel);
 
 /**
- * SSLCommerz IPN listener — validates val_id server-side.
- * Best-effort: the sandbox gateway cannot reach http://localhost:5000,
- * so IPN will fail locally and the success-redirect POST is the primary
- * completion path (see SSLCOMMERZ_TROUBLESHOOTING.md). A failed IPN
- * therefore returns 200 with the error logged, so the gateway stops
- * retrying a validation that cannot succeed — it never changes a
- * payment's status on its own.
+- SSLCommerz IPN listener — validates val_id server-side.
+- Best-effort: the sandbox gateway cannot reach http://localhost:5000,
+- so IPN will fail locally and the success-redirect POST is the primary
+- completion path (see SSLCOMMERZ_TROUBLESHOOTING.md). A failed IPN
+- therefore returns 200 with the error logged, so the gateway stops
+- retrying a validation that cannot succeed — it never changes a
+- payment's status on its own.
  */
 router.post("/ipn", async (req, res) => {
   try {
@@ -455,10 +469,10 @@ router.post("/ipn", async (req, res) => {
 });
 
 /**
- * Debug endpoint — owner only. Returns the payment's gateway state so
- * a failed payment can be diagnosed from the backend terminal + this
- * endpoint, without exposing anything to other students.
- * GET /api/payments/debug/:tranId
+- Debug endpoint — owner only. Returns the payment's gateway state so
+- a failed payment can be diagnosed from the backend terminal + this
+- endpoint, without exposing anything to other students.
+- GET /api/payments/debug/:tranId
  */
 router.get("/debug/:tranId", requireAuth, async (req: AuthenticatedRequest, res) => {
   const payment = await prisma.payment.findUnique({ where: { tranId: String(req.params.tranId) } });
@@ -486,26 +500,26 @@ router.get("/debug/:tranId", requireAuth, async (req: AuthenticatedRequest, res)
 });
 
 /**
- * Public receipt verification — NO auth, read-only, single DB lookup.
- * GET /api/payments/verify/:id?sig=<HMAC>
+- Public receipt verification — NO auth, read-only, single DB lookup.
+- GET /api/payments/verify/:id?sig=<HMAC>
  *
- * This is the anti-forgery check. A printed receipt or screenshot is
- * never proof by itself — anyone can edit the roll, name or amount
- * with Photoshop or AI. The proof is the live database record shown
- * by the verification page (/verify/<id>), reached by scanning the
- * QR code on the receipt.
+- This is the anti-forgery check. A printed receipt or screenshot is
+- never proof by itself — anyone can edit the roll, name or amount
+- with Photoshop or AI. The proof is the live database record shown
+- by the verification page (/verify/<id>), reached by scanning the
+- QR code on the receipt.
  *
- * The QR / URL carries an HMAC signature over the identity binding
- * (payment id + transaction id + student roll + student name +
- * amount). If any of those were changed, the signature fails and
- * valid is false. valid is true ONLY when the signature matches AND
- * the payment status is COMPLETED. It is false for PENDING / FAILED /
- * CANCELLED payments, for a missing payment, and for a bad signature.
- * The page shows, in order: Student Roll, Student Name, Paid Amount,
- * then Term, Hall, Department, Fee Type, Transaction ID, Receipt No.
- * The clerk's check: does the roll + name + amount on the receipt
- * match the roll + name + amount on this live page? If not, forged.
- * No email or password is ever returned here.
+- The QR / URL carries an HMAC signature over the identity binding
+- (payment id + transaction id + student roll + student name +
+- amount). If any of those were changed, the signature fails and
+- valid is false. valid is true ONLY when the signature matches AND
+- the payment status is COMPLETED. It is false for PENDING / FAILED /
+- CANCELLED payments, for a missing payment, and for a bad signature.
+- The page shows, in order: Student Roll, Student Name, Paid Amount,
+- then Term, Hall, Department, Fee Type, Transaction ID, Receipt No.
+- The clerk's check: does the roll + name + amount on the receipt
+- match the roll + name + amount on this live page? If not, forged.
+- No email or password is ever returned here.
  */
 router.get("/verify/:id", async (req, res) => {
   const payment = await prisma.payment.findUnique({
@@ -539,19 +553,19 @@ router.get("/verify/:id", async (req, res) => {
 });
 
 /**
- * Public quick lookup — NO auth, read-only.
- * GET /api/payments/lookup?q=<roll OR receipt number>
+- Public quick lookup — NO auth, read-only.
+- GET /api/payments/lookup?q=<roll OR receipt number>
  *
- * The no-QR way to verify: a teacher types or pastes a roll number
- * (e.g. 1903001) or a receipt number (e.g. RUET-2026-000123) and gets
- * the same live-database result as scanning the QR — roll, name,
- * amount, term, hall, department, fee type, transaction ID, receipt
- * number and COMPLETED / NOT VERIFIED status. No login, no scan.
- * Returns the most recent COMPLETED payment for that roll if there
- * is one, otherwise the most recent payment for that roll.
- * This is server-side, so no HMAC signature is needed from the
- * caller; `valid` here means "a COMPLETED record exists for this
- * roll / receipt number in the live database".
+- The no-QR way to verify: a teacher types or pastes a roll number
+- (e.g. 1903001) or a receipt number (e.g. RUET-2026-000123) and gets
+- the same live-database result as scanning the QR — roll, name,
+- amount, term, hall, department, fee type, transaction ID, receipt
+- number and COMPLETED / NOT VERIFIED status. No login, no scan.
+- Returns the most recent COMPLETED payment for that roll if there
+- is one, otherwise the most recent payment for that roll.
+- This is server-side, so no HMAC signature is needed from the
+- caller; `valid` here means "a COMPLETED record exists for this
+- roll / receipt number in the live database".
  */
 router.get("/lookup", async (req, res) => {
   const q = String(req.query.q ?? "").trim();
@@ -599,13 +613,13 @@ router.get("/lookup", async (req, res) => {
 
 /** Receipt / payment detail — owner only.
  *
- * NO RECEIPT FOR PENDING / FAILED PAYMENTS: if the payment is not
- * COMPLETED, no receipt exists — so no QR code, no verification URL
- * and no receipt number are returned, even if a stale receiptNo is
- * stored. Only a COMPLETED payment gets verifyUrl / qrDataUrl /
- * verifySig, and receiptAvailable is true only then. The frontend
- * receipt page renders the formal receipt only for COMPLETED
- * payments; for anything else it shows only a status card.
+- NO RECEIPT FOR PENDING / FAILED PAYMENTS: if the payment is not
+- COMPLETED, no receipt exists — so no QR code, no verification URL
+- and no receipt number are returned, even if a stale receiptNo is
+- stored. Only a COMPLETED payment gets verifyUrl / qrDataUrl /
+- verifySig, and receiptAvailable is true only then. The frontend
+- receipt page renders the formal receipt only for COMPLETED
+- payments; for anything else it shows only a status card.
  */
 router.get("/:id", requireAuth, async (req: AuthenticatedRequest, res) => {
   const payment = await prisma.payment.findUnique({ where: { id: String(req.params.id) } });

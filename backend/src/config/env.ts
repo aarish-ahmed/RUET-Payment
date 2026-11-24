@@ -16,12 +16,21 @@ function required(name: string): string {
   return value;
 }
 
+const resolvedFrontendUrl =
+  process.env.FRONTEND_URL?.trim().replace(/\/+$/, "") || "http://localhost:3000";
+
+const resolvedBackendUrl =
+  (process.env.BACKEND_URL?.trim() || process.env.RENDER_EXTERNAL_URL?.trim() || "").replace(
+    /\/+$/,
+    "",
+  ) || "http://localhost:5000";
+
 export const env = {
   port: Number(process.env.PORT ?? "5000"),
   databaseUrl: required("DATABASE_URL"),
   jwtSecret: required("JWT_SECRET"),
   jwtExpiresIn: process.env.JWT_EXPIRES_IN ?? "7d",
-  frontendUrl: process.env.FRONTEND_URL ?? "http://localhost:3000",
+  frontendUrl: resolvedFrontendUrl,
   // All origins the API will accept CORS requests from. FRONTEND_URL is
   // always included. Add more with FRONTEND_URLS (comma-separated), e.g.
   // FRONTEND_URLS="http://localhost:3000,http://localhost:3001" — Next.js
@@ -32,10 +41,10 @@ export const env = {
   frontendUrls: [
     ...new Set(
       [
-        process.env.FRONTEND_URL ?? "http://localhost:3000",
+        resolvedFrontendUrl,
         ...(process.env.FRONTEND_URLS ?? "")
           .split(",")
-          .map((origin) => origin.trim())
+          .map((origin) => origin.trim().replace(/\/+$/, ""))
           .filter(Boolean),
         "http://localhost:3000",
         "http://localhost:3001",
@@ -44,7 +53,7 @@ export const env = {
       ],
     ),
   ],
-  backendUrl: process.env.BACKEND_URL ?? "http://localhost:5000",
+  backendUrl: resolvedBackendUrl,
   // Secret used to HMAC-sign receipt verification URLs (see
   // services/receipt.ts). Falls back to JWT_SECRET so a deployment
   // that only sets JWT_SECRET still works; set RECEIPT_SECRET to a
